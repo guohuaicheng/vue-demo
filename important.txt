@@ -1,0 +1,1 @@
+webpack dev middleware 会拦截所有的请求，如果本地有index.html那么就会永远返回此文件，想要使请求发到自己需要的地方可以把index.html改下名字。 
