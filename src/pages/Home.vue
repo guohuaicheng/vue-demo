@@ -18,11 +18,11 @@
 <template>
   <div class="vue-home">
     <Header></Header>
-    <div class="content" style="ddd">
-<router-view></router-view>
-</div>
-<div></div>
-</div>
+    <div class="content">
+      <router-view></router-view>
+    </div>
+    <div></div>
+  </div>
 </template>
 <script>
   export default {
@@ -38,7 +38,6 @@
     },
     methods: {
       ddd() {
-        debugger;
         this.$store.dispatch("login");
       }
     }

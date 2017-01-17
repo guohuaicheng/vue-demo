@@ -14,6 +14,11 @@ const server = new WebpackDevServer(compiler, {
       target: 'http://localhost:8080/default/rest/services',
       secure: false,
       pathRewrite: { '^/api': '' }
+    },
+    '/iapi/*': {
+      target: 'http://localhost:8080/default/api',
+      secure: false,
+      pathRewrite: { '^/iapi': '' }
     }
   }
 })
@@ -27,11 +32,11 @@ const server = new WebpackDevServer(compiler, {
 // })
 
 server.app.get("*", function(req, res) {
-    res.sendFile(__dirname + '/index1.html');
-  })
-  // server.use(history());
+  res.sendFile(__dirname + '/index1.html');
+})
+// server.use(history());
 server.listen(3002, (err) => {
-  if(err) {
+  if (err) {
     console.log(err)
     return
   }

@@ -38,17 +38,12 @@
     },
     computed: {
       buildDefinition() {
-        return this.$store.state.build.buildDefinition;
+        return this.$store.state.build.buildDefinition || {};
       }
     },
     methods: {
       getBuildDefinition(definitionId) {
-        this.$http.get('/api/cd/build/definitions/details/' + definitionId).then((response) => {
-          // success callback
-          this.buildDefinition = response.body;
-        }, (response) => {
-          // error callback
-        });
+        this.$store.dispatch("getBuildDefinition", definitionId)
       }
     },
     components: {

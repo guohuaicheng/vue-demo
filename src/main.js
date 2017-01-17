@@ -26,11 +26,7 @@ var router = new VueRouter({
   routes,
   base: "/"
 })
-var dd = function() {
-  if (ccc) {
-    11
-  }
-}
+
 // new Vue({ router, store }).$mount("#app");
 new Vue({
   template: "<router-view/>",

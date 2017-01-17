@@ -35,7 +35,7 @@
   <div class="build-content">
     <div class="build-left-side">
       <div v-for="buildDefinition in buildDefinitions">
-        <router-link :to="'/project/' + $route.params.projectId + '/build/' + buildDefinition.definitionId" :class="{active: ('/project/' + $route.params.projectId + '/build/' + buildDefinition.definitionId) === path}">
+        <router-link :to="'/projects/' + $route.params.projectId + '/builds/' + buildDefinition.definitionId" :class="{active: ('/projects/' + $route.params.projectId + '/builds/' + buildDefinition.definitionId) === path}">
           <div @click="getBuildDefinition" :definitionId="buildDefinition.definitionId">{{buildDefinition.definitionName}}</div>
         </router-link>
       </div>
@@ -66,20 +66,16 @@
     methods: {
       getBuildDefinition(e) {
         var definitionId = e.target.getAttribute("definitionId");
-        this.$http.get('/api/cd/build/definitions/details/' + definitionId).then((response) => {
-          this.$store.dispatch("getBuildDefinition", response.body);
-        }, (response) => {
-          console.log("d1")
-        });
+        this.$store.dispatch("getBuildDefinition", definitionId);
       }
     },
     mounted() {
       this.queryBuildDefinitions(this.$route.params.projectId, (buildDefinitions) => {
         this.buildDefinitions = buildDefinitions;
         var path = this.$route.fullPath;
-        if (path.endsWith("/build")) {
+        if (path.endsWith("/builds")) {
           if (buildDefinitions && buildDefinitions.length > 0) {
-            this.$router.replace("/project/" + this.$route.params.projectId + "/build/" + buildDefinitions[0].definitionId);
+            this.$router.replace("/projects/" + this.$route.params.projectId + "/builds/" + buildDefinitions[0].definitionId);
           } else {
 
           }
@@ -88,9 +84,9 @@
     },
     updated() {
       var path = this.$route.fullPath;
-      if (path.endsWith("/build")) {
+      if (path.endsWith("/builds") || path.endsWith("/builds/")) {
         if (this.buildDefinitions && this.buildDefinitions.length > 0) {
-          this.$router.replace("/project/" + this.$route.params.projectId + "/build/" + this.buildDefinitions[0].definitionId);
+          this.$router.replace("/projects/" + this.$route.params.projectId + "/builds/" + this.buildDefinitions[0].definitionId);
         } else {
 
         }

@@ -24,6 +24,9 @@
   export default {
     props: {
       buildDefinition: Object
+    },
+    data() {
+      return {}
     }
 
   }

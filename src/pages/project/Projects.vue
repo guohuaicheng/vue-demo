@@ -16,7 +16,7 @@
     <md-table-body>
       <md-table-row v-for="(row, index) in products" :key="index">
         <md-table-cell>
-          <router-link :to="'project/' + row.projectId + '/overview'">{{row.projectName}}</router-link>
+          <router-link :to="'projects/' + row.projectId + '/overview'">{{row.projectName}}</router-link>
         </md-table-cell>
         <md-table-cell>{{row.acl == "PUBLIC" ? "公开" : "私有"}}</md-table-cell>
         <md-table-cell>{{row.projectStatus}}</md-table-cell>

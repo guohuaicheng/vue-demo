@@ -7,14 +7,14 @@ const routes = [{
     component: resolve => require(["../pages/project/Projects.vue"], resolve)
   },
   {
-    path: 'project/:projectId',
+    path: 'projects/:projectId',
     component: resolve => require(["../pages/project/Project.vue"], resolve),
     children: [{
       path: 'overview',
       component: resolve => require(["../pages/project/ProjectDetails.vue"], resolve),
     },
     {
-      path: 'build',
+      path: 'builds',
       component: resolve => require(["../pages/project/build/Build.vue"], resolve),
       children: [{
         path: ":definitionId",

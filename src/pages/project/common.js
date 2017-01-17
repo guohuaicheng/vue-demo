@@ -1,7 +1,7 @@
 export default {
   methods: {
     queryBuildDefinitions(projectId, cb) {
-      this.$http.get('/api/cd/build/definitions/project/' + projectId).then((response) => {
+      this.$http.get('/iapi/cd/builddefs?projectId=' + projectId).then((response) => {
         // success callback
         // this.buildDefinitions = response.body;
         cb && cb(response.body);

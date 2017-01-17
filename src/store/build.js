@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import VueResource from 'vue-resource'
+Vue.use(VueResource)
 
 export default {
   state: {
@@ -6,15 +8,17 @@ export default {
   },
   mutations: {
     getBuildDefinition(state, buildDefinition) {
-      debugger;
-      //   setTimeout(() => {
       state.buildDefinition = buildDefinition;
-      //   }, 3000);
     }
   },
   actions: {
-    getBuildDefinition(context, buildDefinition) {
-      context.commit("getBuildDefinition", buildDefinition)
+    getBuildDefinition(context, buildDefinitionId) {
+      Vue.http.get('/iapi/cd/builddefs/' + buildDefinitionId + "/details").then((response) => {
+        context.commit("getBuildDefinition", response.body);
+      }, (response) => {
+        console.log("d1")
+      });
+      // context.commit("getBuildDefinition", buildDefinition)
     }
   }
 }

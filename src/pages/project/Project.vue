@@ -43,8 +43,8 @@
   export default {
     beforeCreate() {
       var path = this.$route.fullPath;
-      if (path.endsWith("/project")) {
-        this.$router.replace("/project/" + this.$route.params.projectId + "/overview");
+      if (path.endsWith("/projects/" + this.$route.params.projectId) || path.endsWith("/projects/" + this.$route.params.projectId + "/")) {
+        this.$router.replace("/projects/" + this.$route.params.projectId + "/overview");
       }
     }
   }
