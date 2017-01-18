@@ -11,14 +11,9 @@ const server = new WebpackDevServer(compiler, {
   },
   proxy: {
     '/api/*': {
-      target: 'http://localhost:8080/default/rest/services',
-      secure: false,
-      pathRewrite: { '^/api': '' }
-    },
-    '/iapi/*': {
       target: 'http://localhost:8080/default/api',
       secure: false,
-      pathRewrite: { '^/iapi': '' }
+      pathRewrite: { '^/api': '' }
     }
   }
 })

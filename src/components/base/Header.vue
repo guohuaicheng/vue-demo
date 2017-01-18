@@ -27,18 +27,17 @@
 </style>
 <template>
   <md-toolbar :class="className">
-    <h2 class="md-title" style="flex: 1;">
-      PrimeOps 
-      <span style="margin-left: 100px">
-        <router-link class="router-link" to="/products" :class="{active:(path.indexOf('/product'))===0}">产品</router-link>
-        <router-link class="router-link" to="/projects" :class="{active:(path.indexOf('/project'))===0}">项目</router-link>
-      </span>
-    </h2>
-      
-    <md-button class="md-icon-button">
-      <md-icon>favorite</md-icon>
-    </md-button>
-  </md-toolbar>
+    <h2 class="md-title" style="flex: 1;"> PrimetonOps
+<span style="margin-left: 100px">
+<router-link class="router-link" to="/products" :class="{active:(path.indexOf('/product'))===0}">产品</router-link>
+<router-link class="router-link" to="/projects" :class="{active:(path.indexOf('/project'))===0}">项目</router-link>
+</span>
+</h2>
+
+<md-button class="md-icon-button">
+  <md-icon>favorite</md-icon>
+</md-button>
+</md-toolbar>
 </template>
 
 <script>

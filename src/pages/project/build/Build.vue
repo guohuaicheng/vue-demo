@@ -2,6 +2,7 @@
   .build-content {
     width: 100%;
     height: 100%;
+    position: relative;
   }
   
   .build-left-side {
@@ -43,54 +44,63 @@
     </div>
     <div class="build-center-bar"></div>
     <div class="build-right-side">
-      <router-view/>
+      <build-details :buildDefinition="buildDefinition" />
     </div>
   </div>
 </template>
 <script>
   import mixins from '../common.js';
+  import BuildDetails from './BuildDetails.vue';
   export default {
     mixins: [mixins],
     data() {
       return {
         buildDefinitions: [],
         definitionId: this.$route.params.definitionId,
-
+        buildDefinition: {}
       }
     },
     computed: {
       path() {
         return this.$route.fullPath;
+      },
+      buildDefinition() {
+        return this.$store.state.build.buildDefinition;
       }
     },
     methods: {
       getBuildDefinition(e) {
-        var definitionId = e.target.getAttribute("definitionId");
-        this.$store.dispatch("getBuildDefinition", definitionId);
+        let buildDefinitionId = "";
+        if (typeof e === "string") {
+          buildDefinitionId = e;
+        } else {
+          buildDefinitionId = e.target.getAttribute("definitionId");
+        }
+        this.$store.dispatch("getBuildDefinition", buildDefinitionId);
       }
     },
     mounted() {
       this.queryBuildDefinitions(this.$route.params.projectId, (buildDefinitions) => {
         this.buildDefinitions = buildDefinitions;
         var path = this.$route.fullPath;
+        let buildDefinitionId = "";
         if (path.endsWith("/builds")) {
           if (buildDefinitions && buildDefinitions.length > 0) {
             this.$router.replace("/projects/" + this.$route.params.projectId + "/builds/" + buildDefinitions[0].definitionId);
+            buildDefinitionId = buildDefinitions[0].definitionId;
           } else {
 
           }
+        } else {
+          buildDefinitionId = this.$route.params.definitionId;
         }
+        this.getBuildDefinition(buildDefinitionId);
       });
     },
     updated() {
-      var path = this.$route.fullPath;
-      if (path.endsWith("/builds") || path.endsWith("/builds/")) {
-        if (this.buildDefinitions && this.buildDefinitions.length > 0) {
-          this.$router.replace("/projects/" + this.$route.params.projectId + "/builds/" + this.buildDefinitions[0].definitionId);
-        } else {
-
-        }
-      }
-    }
+    },
+    components: {
+      BuildDetails
+    },
   }
 </script>

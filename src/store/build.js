@@ -4,21 +4,39 @@ Vue.use(VueResource)
 
 export default {
   state: {
-    buildDefinition: {}
+    buildDefinition: {},
+    stageTpsAttrsDefinitions: {},
+    stageTpAttrDefinitions: {}
   },
   mutations: {
     getBuildDefinition(state, buildDefinition) {
       state.buildDefinition = buildDefinition;
+    },
+    getBuildStageTPAttrsDefs(state, attrsDefs) {
+      state.stageTpAttrDefinitions = attrsDefs;
     }
   },
   actions: {
     getBuildDefinition(context, buildDefinitionId) {
-      Vue.http.get('/iapi/cd/builddefs/' + buildDefinitionId + "/details").then((response) => {
+      Vue.http.get('/api/cd/builddefs/' + buildDefinitionId + "/details").then((response) => {
         context.commit("getBuildDefinition", response.body);
       }, (response) => {
         console.log("d1")
       });
-      // context.commit("getBuildDefinition", buildDefinition)
+    },
+    getBuildStageTPAttrsDefs(context, stageTpId) {
+      if (context.state.stageTpsAttrsDefinitions[stageTpId]) {
+        context.commit("getBuildStageTPAttrsDefs", context.state.stageTpsAttrsDefinitions[stageTpId]);
+      } else {
+        Vue.http.get('/api/cd/buildstagetps/' + stageTpId + "/attrdefs").then((response) => {
+          context.state.stageTpsAttrsDefinitions[stageTpId] = response.body;
+          context.commit("getBuildStageTPAttrsDefs", response.body);
+        }, (response) => {
+          console.log("d1")
+        });
+      }
+
+
     }
   }
 }

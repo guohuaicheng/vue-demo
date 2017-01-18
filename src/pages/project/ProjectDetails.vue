@@ -2,9 +2,9 @@
 
 </style>
 <template>
-<div>
-       {{project.projectId}} - {{project.projectName}}
-</div>
+  <div>
+    {{project.projectId}} - {{project.projectName}}
+  </div>
 </template>
 <script>
   export default {

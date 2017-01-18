@@ -1,21 +1,40 @@
 <style>
-.definition-name {
-  margin: 0 0 10px 10px;
-}
+  .definition-name {
+    margin: 0 0 10px 10px;
+  }
+  .build-stages-height-100{
+    height: 100%;
+    position: relative;
+    /*position: absolute;
+    top:20px;
+    bottom:20px;
+    width: 100%;*/
+  }
+  .md-dynamic-height {
+    position: absolute;
+    top: 30px;
+    bottom: 0px;
+  }
+  .md-tabs-content {
+    position: absolute !important;
+    top: 48px;
+    bottom: 0px;
+    height: auto !important;
+  }
+  #overview {
+    padding: 10px;
+  }
 </style>
 <template>
-  <div>
+  <div class='build-stages-height-100'>
     <h2 class="definition-name">{{buildDefinition.definitionName}}</h2>
     <md-tabs>
-      <md-tab id="movies" md-label="Movies">
+      <md-tab id="overview" md-label="Movies">
         <build-overview :buildDefinition="buildDefinition"></build-overview>
       </md-tab>
 
-      <md-tab id="music" md-label="Music">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas amet cum vitae, omnis! Illum quas
-          voluptatem, expedita iste, dicta ipsum ea veniam dolore in, quod saepe reiciendis nihil.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Deserunt dolorum quas amet cum vitae, omnis! Illum quas
-          voluptatem, expedita iste, dicta ipsum ea veniam dolore in, quod saepe reiciendis nihil.</p>
+      <md-tab id="stages" md-label="Music">
+        <build-stages :buildDefinition="buildDefinition"></build-stages>
       </md-tab>
 
       <md-tab id="books" md-label="Books">
@@ -30,29 +49,14 @@
 </template>
 <script>
   import BuildOverview from './BuildOverview.vue';
+  import BuildStages from './BuildStages.vue';
   export default {
-    data() {
-      return {
-        buildDefinition: {}
-      }
-    },
-    computed: {
-      buildDefinition() {
-        return this.$store.state.build.buildDefinition || {};
-      }
-    },
-    methods: {
-      getBuildDefinition(definitionId) {
-        this.$store.dispatch("getBuildDefinition", definitionId)
-      }
+    props: {
+      buildDefinition: Object
     },
     components: {
-      BuildOverview
-    },
-    mounted() {
-      if (!!this.$route.params.definitionId) {
-        this.getBuildDefinition(this.$route.params.definitionId);
-      }
+      BuildOverview,
+      BuildStages
     }
   }
 </script>

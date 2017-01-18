@@ -2,7 +2,8 @@
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
-  // var jquery = require("jquery")
+var CopyWebpackPlugin = require('copy-webpack-plugin')
+// var jquery = require("jquery")
 
 module.exports = {
   entry: {
@@ -31,29 +32,29 @@ module.exports = {
   },
   module: {
     loaders: [{
-        test: /\.vue$/,
-        loader: 'vue-loader'
-      },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/
-      },
-      {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader'
-      },
-      {
-        test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
-        loader: 'file-loader'
-      },
-      {
-        test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
-        loader: 'file-loader',
-        query: {
-          name: '[name].[ext]?[hash]'
-        }
+      test: /\.vue$/,
+      loader: 'vue-loader'
+    },
+    {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      exclude: /node_modules/
+    },
+    {
+      test: /\.css$/,
+      loader: 'style-loader!css-loader'
+    },
+    {
+      test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
+      loader: 'file-loader'
+    },
+    {
+      test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
+      loader: 'file-loader',
+      query: {
+        name: '[name].[ext]?[hash]'
       }
+    }
     ],
   },
   plugins: [
@@ -69,6 +70,11 @@ module.exports = {
       "window.jQuery": "jquery"
     }),
     new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
+    new CopyWebpackPlugin([{
+      from: 'src/common/images',
+      to: 'images'
+    }
+    ])
   ],
   devServer: {
     hot: true,
@@ -84,9 +90,9 @@ module.exports = {
     }
   }
 }
-if(process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'
-    // http://vue-loader.vuejs.org/en/workflow/production.html
+  // http://vue-loader.vuejs.org/en/workflow/production.html
   module.exports.plugins = (module.exports.plugins || []).concat([
     new webpack.DefinePlugin({
       'process.env': {
