@@ -47,15 +47,17 @@
   }
 </style>
 <template>
-  <li class='build-stage-card' :stageTpVOId="stageTpVO.stageTpVOId" :stage-template-id="stageTpVO.stageTpId" :title="stageTpVO.stageTpLabel">
+  <li class='build-stage-card' @click="stageCardClicked">
     <!--{{buildStage.stageName}}-->
-    <img class='build-stage-card-img' :src="StageIcons[stageTpVO.stageTpId]" />
+    <img class='build-stage-card-img' :src="StageIcons[buildStage.stageTpId]" />
     <div class='build-stage-card-intro'>
       <div class='build-stage-card-name large-font'>
-        {{stageTpVO.stageTpLabel}}
+        <!--{{stageTpVO.stageTpLabel}}-->
+        {{buildStage.stageName}}
       </div>
       <div class='build-stage-card-desc small-font'>
-        {{stageTpVO.description}}
+        <!--{{stageTpVO.description}}-->
+        {{buildStage.stageTpDescription}}
       </div>
     </div>
     <img class='build-button-img remove-img' title='删除' />
@@ -67,30 +69,14 @@
     props: {
       buildStage: Object
     },
-    computed: {
-      stageTpVO() {
-        var stageTpVOId = this.generateStageTpVOId();
-        if (this.buildStage) {
-          return {
-            "stageTpVOId": stageTpVOId,
-            "stageTpId": this.buildStage.stageTpId,
-            "stageTpLabel": this.buildStage.stageName,
-            "description": this.buildStage.stageTpDescription,
-            "buildStageAttributeDefinitions": []
-          }
-        }
-        return {};
-
-      }
-    },
     data() {
       return {
         StageIcons
       }
     },
     methods: {
-      generateStageTpVOId() {
-        return Math.random().toString().substring(2);
+      stageCardClicked() {
+        this.$emit("click", this.buildStage);
       }
     }
   }

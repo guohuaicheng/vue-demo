@@ -43,7 +43,7 @@
     },
     methods: {
       queryProjects() {
-        this.$http.post('/api/pm/projects/projectlist').then((response) => {
+        this.$http.get('/api/pm/projects').then((response) => {
           // success callback
           this.products = response.body.data;
         },

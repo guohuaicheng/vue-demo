@@ -11,12 +11,14 @@ const server = new WebpackDevServer(compiler, {
   },
   proxy: {
     '/api/*': {
-      target: 'http://localhost:8080/default/api',
+      target: 'http://localhost:8080/default',
       secure: false,
-      pathRewrite: { '^/api': '' }
+      // pathRewrite: { '^/api': '' }
     }
   }
 })
+
+server.app.use(webpackHotMiddleware(compiler));
 
 // server.app.all("*", function(req, res, next) {
 //   if(req.originalUrl.indexOf("api") != -1) {
@@ -26,10 +28,9 @@ const server = new WebpackDevServer(compiler, {
 //   }
 // })
 
-server.app.get("*", function(req, res) {
-  res.sendFile(__dirname + '/index1.html');
-})
-// server.use(history());
+// server.app.get("*", function(req, res) {
+//   res.sendFile(__dirname + '/index1.html');
+// })
 server.listen(3002, (err) => {
   if (err) {
     console.log(err)

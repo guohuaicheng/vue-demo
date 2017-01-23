@@ -1,15 +1,16 @@
-// var path = require('path')
+var path = require('path')
 var webpack = require('webpack')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
-// var jquery = require("jquery")
 
 module.exports = {
-  entry: {
-    app: './src/main.js',
-    vendors: ["jquery"]
-  },
+  entry: [
+    'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000',
+    './src/main.js',
+  ],
+
+  // vendors: ["jquery"]
   output: {
     filename: 'bundle.js',
     // path: 'c:/nginx-1.11.2/html',
@@ -58,37 +59,43 @@ module.exports = {
     ],
   },
   plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
     new HtmlWebpackPlugin({ //根据模板插入css/js等生成最终HTML
       filename: 'index.html', //生成的html存放路径，相对于 path
       template: './index.html', //html模板路径
       inject: true, //允许插件修改哪些内容，包括head与body
       hash: true, //为静态资源生成hash值
     }),
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      "window.jQuery": "jquery"
-    }),
-    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
+    // new webpack.ProvidePlugin({
+    //   $: "jquery",
+    //   jQuery: "jquery",
+    //   "window.jQuery": "jquery"
+    // }),
+    // new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
     new CopyWebpackPlugin([{
       from: 'src/common/images',
       to: 'images'
+    },
+    {
+      from: 'node_modules/monaco-editor/dev/vs',
+      to: 'vs',
     }
     ])
   ],
-  devServer: {
-    hot: true,
-    inline: true,
-    historyApiFallback: true,
-    //其实很简单的，只要配置这个参数就可以了
-    proxy: {
-      '/api/*': {
-        target: 'http://localhost:3000',
-        secure: false,
-        pathRewrite: { '^/api': '' }
-      }
-    }
-  }
+  // devServer: {
+  //   hot: true,
+  //   inline: true,
+  //   historyApiFallback: true,
+  //   proxy: {
+  //     '/api/*': {
+  //       target: 'http://localhost:8085/default',
+  //       secure: false,
+  //       // pathRewrite: { '^/api': '' }
+  //     }
+  //   }
+  // }
 }
 if (process.env.NODE_ENV === 'production') {
   module.exports.devtool = '#source-map'

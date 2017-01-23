@@ -1,9 +1,13 @@
 import Header from './base/Header'
 import LeftBar from './base/LeftBar'
-import dSelect from './base/dSelect'
+import DSelect from './base/DSelect'
+import MonacoEditor from './base/MonacoEditor'
+import DCheckbox from './base/DCheckbox'
 
 export default {
   Header,
   LeftBar,
-  dSelect
+  DSelect,
+  MonacoEditor,
+  DCheckbox
 }

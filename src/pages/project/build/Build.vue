@@ -25,7 +25,7 @@
     right: 0px;
     float: left;
     height: 100%;
-    padding: 10px;
+    /*padding: 10px;*/
     overflow: auto
   }
   .active {

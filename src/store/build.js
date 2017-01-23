@@ -14,6 +14,7 @@ export default {
     },
     getBuildStageTPAttrsDefs(state, attrsDefs) {
       state.stageTpAttrDefinitions = attrsDefs;
+      // context.state.stageTpsAttrsDefinitions[stageTpId] = response.body;
     }
   },
   actions: {

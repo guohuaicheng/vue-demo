@@ -19,7 +19,7 @@
     methods: {
       getProject() {
         var projectId = this.$route.params.projectId;
-        this.$http.get('/api/pm/projects/project/' + projectId).then((response) => {
+        this.$http.get('/api/pm/projects/' + projectId).then((response) => {
           // success callback
           this.project = response.body || {};
         }, (response) => {

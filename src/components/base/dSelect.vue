@@ -1,8 +1,8 @@
 <template>
-  <div v-if="options">
+  <div>
     <md-input-container>
       <label :for="name">{{name}}</label>
-      <md-select :name="name" :id="id" v-model="value">
+      <md-select :name="name" :id="id" v-model="defaultValue">
         <md-option v-for="option in options" :value="option[valueField]">{{option[textField]}}</md-option>
       </md-select>
     </md-input-container>
@@ -18,13 +18,20 @@
       data: Array,
       textField: String,
       valueField: String,
-      defaultValue: String
+      value: String
     },
     data() {
       return {
         options: this.url ? null : this.data,
-        value: this.defaultValue
+        defaultValue: this.value
       }
+    },
+    watch: {
+      defaultValue(value) {
+        this.$emit("input", value);
+      }
+    },
+    methods: {
     },
     mounted() {
       this.$http.get("/" + this.url).then((response) => {

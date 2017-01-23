@@ -37,15 +37,19 @@
     padding: 0;
     height: 100%;
   }
+  .build-stage-card-selected {
+    background-color: #EEE;
+  }
 </style>
 <template>
   <div class="project-content">
     <div class="build-stage-left-side">
       <div v-if="buildDefinition.buildPipeline">
         <ul class="build-stages">
-          <div v-for="buildStage in buildDefinition.buildPipeline.buildStages" @click="renderParams(buildStage)">
-            <build-stage-card :buildStage="buildStage" />
-          </div>
+          <!--<div >-->
+          <build-stage-card :buildStage="buildStage1" :class="{'build-stage-card-selected': buildStage1 === buildStage }" v-for="buildStage1 in buildDefinition.buildPipeline.buildStages"
+            @click="renderParams" />
+          <!--</div>-->
         </ul>
       </div>
     </div>
@@ -61,53 +65,92 @@
   export default {
     props: {
       buildDefinition: {
-        type: Object,
-        default: { buildPipeline: {} }
+        type: Object
       }
     },
     data() {
       return {
-        buildStage: {}
+        buildStage: null
       }
     },
     computed: {
       stageTpAttrDefs() {
+        if (!this.buildStage) return [];
+        if (this.buildStage.buildStageAttributes[0].category) return this.buildStage.buildStageAttributes;
         let stageTpAttrs = this.$store.state.build.stageTpAttrDefinitions;
-        let fields = [];
-        var stageAttrs = this.buildStage.buildStageAttributes;
-        if (!stageTpAttrs) return fields;
-        for (let m = 0; m < stageTpAttrs.length; m++) {
-          let stageTpAttr = stageTpAttrs[m];
-          let defaultValue = "";
-          for (let i = 0; i < stageAttrs.length; i++) {
-            let stageAttr = stageAttrs[i];
-            if (stageAttr.attrDefId === stageTpAttr.attrDefId) {
-              defaultValue = stageAttr.attrValue;
+        if (!stageTpAttrs || !stageTpAttrs.length) {
+          return [];
+        }
+        // let fields = [];
+        // var stageAttrs = this.buildStage.buildStageAttributes;
+        // if (!stageTpAttrs) return fields;
+        // for (let m = 0; m < stageTpAttrs.length; m++) {
+        //   let stageTpAttr = stageTpAttrs[m];
+        //   let defaultValue = "";
+        //   for (let i = 0; i < stageAttrs.length; i++) {
+        //     let stageAttr = stageAttrs[i];
+        //     if (stageAttr.attrDefId === stageTpAttr.attrDefId) {
+        //       defaultValue = stageAttr.attrValue;
+        //       break;
+        //     }
+        //   }
+        //   fields.push({
+        //     "fieldId": stageTpAttr.attrDefId,
+        //     "fieldName": stageTpAttr.attrDefName,
+        //     "fieldLabel": stageTpAttr.attrDefLabel,
+        //     "sort": stageTpAttr.sort,
+        //     "category": stageTpAttr.category,
+        //     "isRequired": stageTpAttr.isRequired,
+        //     "displayFormat": stageTpAttr.displayFormat,
+        //     "tip": stageTpAttr.tip,
+        //     "defaultValue": defaultValue,
+        //     "controlType": stageTpAttr.controlType,
+        //     "valueProvider": JSON.parse(stageTpAttr.valueProvider)
+        //   })
+        // }
+        // let flag = false;
+        for (let i = 0, l = this.buildStage.buildStageAttributes.length; i < l; i++) {
+          let attr = this.buildStage.buildStageAttributes[i];
+          for (let j = 0, jl = stageTpAttrs.length; j < jl; j++) {
+            if (attr.attrDefId === stageTpAttrs[j].attrDefId) {
+              let stageTpAttr = stageTpAttrs[j];
+              // this.configuredStage[this.buildStage.stageId] = true;
+              attr.fieldLabel = stageTpAttr.attrDefLabel;
+              attr.fieldName = stageTpAttr.attrDefName;
+              attr.controlType = stageTpAttr.controlType;
+              attr.valueProvider = stageTpAttr.valueProvider;
+              attr.category = stageTpAttr.category;
               break;
             }
           }
-          fields.push({
-            "fieldId": stageTpAttr.attrDefId,
-            "fieldName": stageTpAttr.attrDefName,
-            "fieldLabel": stageTpAttr.attrDefLabel,
-            "sort": stageTpAttr.sort,
-            "category": stageTpAttr.category,
-            "isRequired": stageTpAttr.isRequired,
-            "displayFormat": stageTpAttr.displayFormat,
-            "tip": stageTpAttr.tip,
-            "defaultValue": defaultValue,
-            "controlType": stageTpAttr.controlType,
-            "valueProvider": JSON.parse(stageTpAttr.valueProvider)
-          })
         }
-        return fields;
+        if (!this.buildStage.buildStageAttributes[0].category) return [];
+        return this.buildStage.buildStageAttributes;
       }
     },
     methods: {
       renderParams(buildStage) {
         this.buildStage = buildStage;
-        this.$store.dispatch("getBuildStageTPAttrsDefs", buildStage.stageTpId);
+        if (!this.buildStage.buildStageAttributes[0].category) {
+          this.$store.dispatch("getBuildStageTPAttrsDefs", buildStage.stageTpId);
+        }
       }
+    },
+    mounted() {
+    },
+    watch: {
+      buildDefinition() {
+        if (this.buildDefinition && this.buildDefinition.buildPipeline && this.buildDefinition.buildPipeline.buildStages && this.buildDefinition.buildPipeline.buildStages.length > 0) {
+          this.renderParams(this.buildDefinition.buildPipeline.buildStages[0]);
+        } else {
+          this.buildStage = null;
+        }
+      }
+    },
+    updated() {
+      // if (!this.buildStage && this.buildDefinition && this.buildDefinition.buildPipeline && this.buildDefinition.buildPipeline.buildStages && this.buildDefinition.buildPipeline.buildStages.length > 0) {
+      //   this.renderParams(this.buildDefinition.buildPipeline.buildStages[0]);
+      // }
     },
     components: {
       BuildStageCard,

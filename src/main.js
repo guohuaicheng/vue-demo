@@ -17,7 +17,7 @@ Object.keys(components).forEach((key) => {
 
 // Vue.use(Vuex);
 Vue.use(VueRouter);
-Vue.use(ElementUI);
+// Vue.use(ElementUI);
 Vue.use(VueMaterial)
 Vue.use(VueResource)
 
